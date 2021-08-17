@@ -15,6 +15,7 @@ import {createFooterStatisticsTemplate} from './view/footer-stats';
 const FILM_COUNT = 16;
 const FILM_COUNT_PER_STEP = 5;
 
+
 export const films = new Array(FILM_COUNT).fill().map(generateFilmMockInfo);
 
 const render = (container, template, place) => {
@@ -48,8 +49,9 @@ if (films.length > FILM_COUNT_PER_STEP) {
   const showMoreButton = siteMainElement.querySelector('.films-list__show-more');
 
   showMoreButton.addEventListener('click', (evt) => {
+
     evt.preventDefault();
-    films.slice(renderedFilmCount, renderedFilmCount + FILM_COUNT_PER_STEP).forEach((films) => render(siteFilmsContainer[0], createSiteFilmCardTemplate(films), 'beforeend'));
+    films.slice(renderedFilmCount, renderedFilmCount + FILM_COUNT_PER_STEP).forEach((film) => render(siteFilmsContainer[0], createSiteFilmCardTemplate(film), 'beforeend'));
     renderedFilmCount += FILM_COUNT_PER_STEP;
 
     if (renderedFilmCount >= films.length) {
