@@ -1,6 +1,15 @@
 
 import dayjs from 'dayjs';
-import {getRandomInteger, getRandomPositiveFloat, generateFixDurationTime, generateRanromArrayElement} from '../utils/utils.js';
+import {getRandomInteger, getRandomPositiveFloat, generateFixDurationTime, generateRanromArrayElement, getRandomBoolean} from '../utils/utils.js';
+
+const MAX_RATING_VALUE = 10;
+const MIN_FILM_YEAR = 1930;
+const MAX_FILM_YEAR = 2021;
+const LAST_MONTH_DAY = 31;
+const MAX_COMMENT_VALUE =5;
+const MIN_FILM_DURATION_VALUE = 30;
+const MAX_FILM_DURATION_VALUE = 230;
+
 
 const generateDescription = () => {
   const descriptions = [
@@ -61,15 +70,13 @@ export const generateGenre = () => {
 };
 
 const generateCardActiveModifier = () => {
-  const modifierState = Boolean(getRandomInteger(0, 1));
-  if (modifierState) {
+  if (getRandomBoolean()) {
     return 'film-card__controls-item--active';
   }
 };
 
 const generatePopupActiveModifier = () => {
-  const modifierState = Boolean(getRandomInteger(0, 1));
-  if (modifierState) {
+  if (getRandomBoolean()) {
     return 'film-details__control-button--active';
   }
 };
@@ -128,7 +135,6 @@ const ageRating = () => {
   return generateRanromArrayElement(ratingParameters);
 };
 
-
 export const generateFilmMockInfo = () => ({
   poster: generateFilmPoster(),
   title:  generateFilmTitle(),
@@ -137,20 +143,20 @@ export const generateFilmMockInfo = () => ({
   actors: generateActors(),
   age: ageRating(),
   alternativeTitle: generateFilmTitle(),
-  rating: getRandomPositiveFloat(0, 10),
-  productionYear: dayjs().year(getRandomInteger(1930, 2020)).format('YYYY'),
-  duration: generateFixDurationTime(),
+  rating: getRandomPositiveFloat(0,MAX_RATING_VALUE),
+  productionYear: dayjs().year(getRandomInteger(MIN_FILM_YEAR, MAX_FILM_YEAR)).format('YYYY'),
+  duration: generateFixDurationTime(getRandomInteger(MIN_FILM_DURATION_VALUE, MAX_FILM_DURATION_VALUE)),
   genre: generateGenre(),
   description: generateDescription(),
   country: generateCountry(),
-  numOfComments: getRandomInteger(0, 5),
+  numOfComments: getRandomInteger(0, MAX_COMMENT_VALUE),
   isWatchList: generateCardActiveModifier(),
   isWatched: generateCardActiveModifier(),
   isFavorites: generateCardActiveModifier(),
   popupIsWatchList: generatePopupActiveModifier(),
   popupIsWatched: generatePopupActiveModifier(),
   popupIsFavorites: generatePopupActiveModifier(),
-  releaseDate: dayjs().year(getRandomInteger(1930, 2020)).day(getRandomInteger(1, 31)).format('DD MMM YYYY'),
+  releaseDate: dayjs().year(getRandomInteger(MIN_FILM_YEAR, MAX_FILM_YEAR)).day(getRandomInteger(1, LAST_MONTH_DAY)).format('DD MMM YYYY'),
 });
 
 

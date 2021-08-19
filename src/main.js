@@ -12,6 +12,7 @@ import {createSiteLoadingStateTemplate} from './view/loading-state';
 import {createSiteFilmPopup} from './view/popup';
 import {createFooterStatisticsTemplate} from './view/footer-stats';
 
+
 const FILM_COUNT = 16;
 const FILM_COUNT_PER_STEP = 5;
 

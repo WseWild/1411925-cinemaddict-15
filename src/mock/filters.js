@@ -1,52 +1,11 @@
-import { films } from '../main';
+import {getRandomInteger} from '../utils/utils.js';
 
-const getIsWatchedNum = () => {
-  let best = [];
-  let fest = [];
-
-  for (let num = 0;num < films.length - 1;num++ ){
-
-    if(films[num].isWatched) {
-      best = films[num].isWatched.slice();
-      fest = fest.concat(best);
-    }
-
-  }
-  return fest.length;
-};
-
-const getIsFavoritesNum = () => {
-  let best = [];
-  let fest = [];
-
-  for (let num = 0;num < films.length - 1;num++ ){
-
-    if(films[num].isFavorites) {
-      best = films[num].isFavorites.slice();
-      fest = fest.concat(best);
-    }
-
-  }
-  return fest.length;
-};
-
-const getIsWatchListNum = () => {
-  let best = [];
-  let fest = [];
-
-  for (let num = 0;num < films.length - 1;num++ ){
-
-    if(films[num].isWatchList) {
-      best = films[num].isWatchList.slice();
-      fest = fest.concat(best);
-    }
-
-  }
-  return fest.length;
-};
+const MIN_FILTER_VALUE = 1;
+const MAX_FILTER_VALUE = 10;
 
 export const generateFiltersMockInfo = () => ({
-  numIsWatchList: getIsWatchListNum(),
-  numIsWatched: getIsWatchedNum(),
-  numIsFavorites: getIsFavoritesNum(),
+  numIsWatchList: getRandomInteger(MIN_FILTER_VALUE, MAX_FILTER_VALUE),
+  numIsWatched: getRandomInteger(MIN_FILTER_VALUE, MAX_FILTER_VALUE),
+  numIsFavorites: getRandomInteger(MIN_FILTER_VALUE, MAX_FILTER_VALUE),
 });
+
