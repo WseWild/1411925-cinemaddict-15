@@ -1,3 +1,6 @@
+import {generateFilmMockInfo} from './mock/film.js';
+import {generateStatsMockInfo} from './mock/stats.js';
+import {generateFiltersMockInfo} from './mock/filters.js';
 import {createSiteProfileTemplate} from './view/profile.js';
 import {createSiteNavMenuTemplate} from './view/main-nav.js';
 import {createSiteStatisticsTemplate} from './view/stats.js';
@@ -5,11 +8,16 @@ import {createSiteSortTemplate} from './view/sort.js';
 import {createSiteFilmsTemplate} from './view/films-list.js';
 import {createSiteFilmCardTemplate} from './view/film-card.js';
 import {createShowMoreBtnTamplate} from './view/show-more-btn';
-import {createSiteTopRatedContainerTemplate} from './view/top-rated-container.js';
-import {createSiteMostCommentedTemplate} from './view/most-commented-container';
 import {createSiteLoadingStateTemplate} from './view/loading-state';
 import {createSiteFilmPopup} from './view/popup';
 import {createFooterStatisticsTemplate} from './view/footer-stats';
+
+
+const FILM_COUNT = 16;
+const FILM_COUNT_PER_STEP = 5;
+
+
+export const films = new Array(FILM_COUNT).fill().map(generateFilmMockInfo);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -21,34 +29,43 @@ render(siteHeaderElement, createSiteProfileTemplate(), 'beforeend');
 
 const siteMainElement = document.querySelector('.main');
 
-render(siteMainElement, createSiteNavMenuTemplate(), 'beforeend');
+render(siteMainElement, createSiteNavMenuTemplate(generateFiltersMockInfo ()), 'beforeend');
 render(siteMainElement, createSiteLoadingStateTemplate(), 'beforeend');
 render(siteMainElement, createSiteSortTemplate(), 'beforeend');
-render(siteMainElement, createSiteStatisticsTemplate(), 'beforeend');
+render(siteMainElement, createSiteStatisticsTemplate(generateStatsMockInfo()), 'beforeend');
 render(siteMainElement, createSiteFilmsTemplate(), 'beforeend');
 
 const siteFilms = siteMainElement.querySelector('.films');
 
-render(siteFilms, createShowMoreBtnTamplate(), 'beforeend');
-render(siteFilms, createSiteTopRatedContainerTemplate(), 'beforeend');
-render(siteFilms, createSiteMostCommentedTemplate(), 'beforeend');
-
 const siteFilmsContainer = siteMainElement.querySelectorAll('.films-list__container');
+for (let num = 0; num < Math.min(films.length, FILM_COUNT_PER_STEP); num++) {
+  render(siteFilmsContainer[0], createSiteFilmCardTemplate(films[num]), 'beforeend');
+}
 
-const addCardElement = (container, count ) => {
-  const FILMS_COUNT = count;
-  for (let num = 0; num < FILMS_COUNT; num++ ) {
-    render(container, createSiteFilmCardTemplate(), 'beforeend');
-  }
-};
-addCardElement(siteFilmsContainer[0], 5);
-addCardElement(siteFilmsContainer[1], 2);
-addCardElement(siteFilmsContainer[2], 2);
+if (films.length > FILM_COUNT_PER_STEP) {
+  let renderedFilmCount = FILM_COUNT_PER_STEP;
+
+  render(siteFilms, createShowMoreBtnTamplate(), 'beforeend');
+
+  const showMoreButton = siteMainElement.querySelector('.films-list__show-more');
+
+  showMoreButton.addEventListener('click', (evt) => {
+
+    evt.preventDefault();
+    films.slice(renderedFilmCount, renderedFilmCount + FILM_COUNT_PER_STEP).forEach((film) => render(siteFilmsContainer[0], createSiteFilmCardTemplate(film), 'beforeend'));
+    renderedFilmCount += FILM_COUNT_PER_STEP;
+
+    if (renderedFilmCount >= films.length) {
+      showMoreButton.remove();
+    }
+  });
+
+}
 
 const siteFooterStatisticks = document.querySelector('.footer__statistics');
 
-render(siteFooterStatisticks, createFooterStatisticsTemplate(), 'beforeend');
+render(siteFooterStatisticks, createFooterStatisticsTemplate(generateStatsMockInfo()), 'beforeend');
 
 const siteBody = document.querySelector('.footer');
 
-render(siteBody, createSiteFilmPopup(), 'afterend');
+render(siteBody, createSiteFilmPopup(films[0]), 'afterend');

@@ -1,4 +1,4 @@
-export const createSiteStatisticsTemplate = () => (
+export const createSiteStatisticsTemplate = (stats) => (
   `<section class="statistic">
     <p class="statistic__rank">
       Your rank
@@ -21,15 +21,15 @@ export const createSiteStatisticsTemplate = () => (
     <ul class="statistic__text-list">
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">You watched</h4>
-        <p class="statistic__item-text">22 <span class="statistic__item-description">movies</span></p>
+        <p class="statistic__item-text">${stats.watchedFilms}<span class="statistic__item-description">movies</span></p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>
-        <p class="statistic__item-text">130 <span class="statistic__item-description">h</span> 22 <span class="statistic__item-description">m</span></p>
+        <p class="statistic__item-text">${stats.totalDurationHours}<span class="statistic__item-description">h</span> ${stats.totalDurationMins} <span class="statistic__item-description">m</span></p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Top genre</h4>
-        <p class="statistic__item-text">Sci-Fi</p>
+        <p class="statistic__item-text">${stats.topGenre}</p>
       </li>
     </ul>
     <div class="statistic__chart-wrap">
