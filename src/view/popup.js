@@ -1,4 +1,6 @@
-export const createSiteFilmPopup = (film) => (
+import {createElement} from '../utils/utils.js';
+
+const createSiteFilmPopup = (film) => (
   `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
       <div class="film-details__top-container">
@@ -69,3 +71,26 @@ export const createSiteFilmPopup = (film) => (
     </form>
   </section>`
 );
+
+export default class SiteFilmPopup {
+  constructor(filters) {
+    this._filters = filters;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSiteFilmPopup(this._filters);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
