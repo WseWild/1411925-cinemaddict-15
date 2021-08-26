@@ -1,3 +1,5 @@
+import {createElement} from '../utils/utils.js';
+
 export const createSiteNavMenuTemplate = (filters) => (
   `<nav class="main-navigation">
     <div class="main-navigation__items">
@@ -9,3 +11,26 @@ export const createSiteNavMenuTemplate = (filters) => (
     <a href="#stats" class="main-navigation__additional">Stats</a>
   </nav>`
 );
+
+export default class SiteNavMenu {
+  constructor(filters) {
+    this._filters = filters;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSiteNavMenuTemplate(this._filters);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

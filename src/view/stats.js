@@ -1,4 +1,6 @@
-export const createSiteStatisticsTemplate = (stats) => (
+import {createElement} from '../utils/utils.js';
+
+const createSiteStatisticsTemplate = (stats) => (
   `<section class="statistic">
     <p class="statistic__rank">
       Your rank
@@ -37,3 +39,26 @@ export const createSiteStatisticsTemplate = (stats) => (
     </div>
   </section>`
 );
+
+export default class SiteStatistics {
+  constructor(stats) {
+    this._stats = stats;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSiteStatisticsTemplate(this._stats);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
