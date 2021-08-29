@@ -14,7 +14,8 @@ import FooterStatisticsView from './view/footer-stats.js';
 import SiteListEmptyView from './view/list-empty.js';
 import {RenderPosition, render} from './utils/utils.js';
 
-const FILM_COUNT = 33;
+
+const FILM_COUNT = 16;
 const FILM_COUNT_PER_STEP = 5;
 
 
@@ -92,32 +93,30 @@ const siteFilms = siteMainElement.querySelector('.films');
 const renderFilmsList = (listContainer, listFilm ) => {
 
   if (listFilm.length === 0 ) {
-    render(siteMainElement, new SiteListEmptyView().getElement(), RenderPosition.BEFOREEND);
-  }  else {
-    for (let num = 0; num < Math.min(listFilm.length, FILM_COUNT_PER_STEP); num++) {
-      renderFilmCard(siteFilmsContainer[0], listFilm[num]);
-    }
-
-    if (listFilm.length > FILM_COUNT_PER_STEP) {
-      let renderedFilmCount = FILM_COUNT_PER_STEP;
-
-      render(listContainer, new ShowMoreBtnView().getElement(), RenderPosition.BEFOREEND);
-
-      const showMoreButton = siteMainElement.querySelector('.films-list__show-more');
-
-      showMoreButton.addEventListener('click', (evt) => {
-
-        evt.preventDefault();
-        listFilm.slice(renderedFilmCount, renderedFilmCount + FILM_COUNT_PER_STEP).forEach((film) => renderFilmCard(siteFilmsContainer[0], film));
-        renderedFilmCount += FILM_COUNT_PER_STEP;
-
-        if (renderedFilmCount >= listFilm.length) {
-          showMoreButton.remove();
-        }
-      });
-
-    }
+    return render(siteMainElement, new SiteListEmptyView().getElement(), RenderPosition.BEFOREEND);
   }
+  listFilm.slice(0, FILM_COUNT_PER_STEP).forEach((film) => renderFilmCard(siteFilmsContainer[0], film));
+
+  if (listFilm.length > FILM_COUNT_PER_STEP) {
+    let renderedFilmCount = FILM_COUNT_PER_STEP;
+
+    render(listContainer, new ShowMoreBtnView().getElement(), RenderPosition.BEFOREEND);
+
+    const showMoreButton = siteMainElement.querySelector('.films-list__show-more');
+
+    showMoreButton.addEventListener('click', (evt) => {
+
+      evt.preventDefault();
+      listFilm.slice(renderedFilmCount, renderedFilmCount + FILM_COUNT_PER_STEP).forEach((film) => renderFilmCard(siteFilmsContainer[0], film));
+      renderedFilmCount += FILM_COUNT_PER_STEP;
+
+      if (renderedFilmCount >= listFilm.length) {
+        showMoreButton.remove();
+      }
+
+    });
+  }
+
 };
 
 renderFilmsList(siteFilms, films);
