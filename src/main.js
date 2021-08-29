@@ -11,7 +11,9 @@ import ShowMoreBtnView from './view/show-more-btn';
 import SiteLoadingStateView from './view/loading-state';
 import SiteFilmPopupView from './view/popup';
 import FooterStatisticsView from './view/footer-stats.js';
+import SiteListEmptyView from './view/list-empty.js';
 import {RenderPosition, render} from './utils/utils.js';
+
 
 const FILM_COUNT = 16;
 const FILM_COUNT_PER_STEP = 5;
@@ -30,6 +32,7 @@ render(siteMainElement, new SiteLoadingStateView().getElement(), RenderPosition.
 render(siteMainElement, new SiteSortTemplateView().getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new SiteStatisticsView(generateStatsMockInfo()).getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new SiteFilmsView().getElement(), RenderPosition.BEFOREEND);
+
 
 const siteFilmsContainer = siteMainElement.querySelectorAll('.films-list__container');
 const siteFooter = document.querySelector('.footer');
@@ -84,31 +87,40 @@ const renderFilmCard = (filmListElement, film) => {
   render(filmListElement, filmComponent.getElement(),RenderPosition.BEFOREEND);
 };
 
+
 const siteFilms = siteMainElement.querySelector('.films');
 
-for (let num = 0; num < Math.min(films.length, FILM_COUNT_PER_STEP); num++) {
-  renderFilmCard(siteFilmsContainer[0], films[num]);
-}
+const renderFilmsList = (listContainer, listFilm ) => {
 
-if (films.length > FILM_COUNT_PER_STEP) {
-  let renderedFilmCount = FILM_COUNT_PER_STEP;
+  if (listFilm.length === 0 ) {
+    return render(siteMainElement, new SiteListEmptyView().getElement(), RenderPosition.BEFOREEND);
+  }
+  listFilm.slice(0, FILM_COUNT_PER_STEP).forEach((film) => renderFilmCard(siteFilmsContainer[0], film));
 
-  render(siteFilms, new ShowMoreBtnView().getElement(), RenderPosition.BEFOREEND);
+  if (listFilm.length > FILM_COUNT_PER_STEP) {
+    let renderedFilmCount = FILM_COUNT_PER_STEP;
 
-  const showMoreButton = siteMainElement.querySelector('.films-list__show-more');
+    render(listContainer, new ShowMoreBtnView().getElement(), RenderPosition.BEFOREEND);
 
-  showMoreButton.addEventListener('click', (evt) => {
+    const showMoreButton = siteMainElement.querySelector('.films-list__show-more');
 
-    evt.preventDefault();
-    films.slice(renderedFilmCount, renderedFilmCount + FILM_COUNT_PER_STEP).forEach((film) => renderFilmCard(siteFilmsContainer[0], film));
-    renderedFilmCount += FILM_COUNT_PER_STEP;
+    showMoreButton.addEventListener('click', (evt) => {
 
-    if (renderedFilmCount >= films.length) {
-      showMoreButton.remove();
-    }
-  });
+      evt.preventDefault();
+      listFilm.slice(renderedFilmCount, renderedFilmCount + FILM_COUNT_PER_STEP).forEach((film) => renderFilmCard(siteFilmsContainer[0], film));
+      renderedFilmCount += FILM_COUNT_PER_STEP;
 
-}
+      if (renderedFilmCount >= listFilm.length) {
+        showMoreButton.remove();
+      }
+
+    });
+  }
+
+};
+
+renderFilmsList(siteFilms, films);
+
 
 const siteFooterStatisticks = document.querySelector('.footer__statistics');
 
