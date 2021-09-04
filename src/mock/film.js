@@ -1,6 +1,6 @@
 
 import dayjs from 'dayjs';
-import {getRandomInteger, getRandomPositiveFloat, generateFixDurationTime, generateRanromArrayElement, getRandomBoolean} from '../utils/utils.js';
+import {getRandomInteger, getRandomPositiveFloat, generateFixDurationTime, generateRanromArrayElement, getRandomBoolean} from '../utils/common.js';
 
 const MAX_RATING_VALUE = 10;
 const MIN_FILM_YEAR = 1930;

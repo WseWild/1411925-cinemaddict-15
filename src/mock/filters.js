@@ -1,4 +1,4 @@
-import {getRandomInteger} from '../utils/utils.js';
+import {getRandomInteger} from '../utils/common.js';
 
 const MIN_FILTER_VALUE = 1;
 const MAX_FILTER_VALUE = 10;

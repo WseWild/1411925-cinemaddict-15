@@ -1,26 +1,3 @@
-export const RenderPosition = {
-  AFTERBEGIN: 'afterbegin',
-  BEFOREEND: 'beforeend',
-};
-
-export const render = (container, element, place) => {
-  switch(place) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
-};
-
-export const createElement = (template) => {
-  const newElement = document.createElement('div');
-  newElement.innerHTML = template;
-
-  return newElement.firstChild;
-};
-
 
 export const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -28,6 +5,13 @@ export const getRandomInteger = (a = 0, b = 1) => {
 
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
+
+export const generateRanromArrayElement = (array) => {
+  const randomIndex = getRandomInteger(0, array.length - 1);
+  return array[randomIndex];
+};
+
+export const getRandomBoolean = () =>  Boolean(getRandomInteger(0, 1));
 
 export const getRandomPositiveFloat = (int1, int2, digits = 1) => {
   const lower = Math.min(Math.abs(int1), Math.abs(int2));
@@ -45,13 +29,5 @@ export  const generateFixDurationTime = (totalMinutes) => {
 
   return hours + mins;
 };
-
-
-export const generateRanromArrayElement = (array) => {
-  const randomIndex = getRandomInteger(0, array.length - 1);
-  return array[randomIndex];
-};
-
-export const getRandomBoolean = () =>  Boolean(getRandomInteger(0, 1));
 
 export const  formatNumberWithSpaces = (num) =>  num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
